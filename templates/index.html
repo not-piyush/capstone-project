@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Price Tracker V3</title>
+    <!-- Modern Font: Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Chart.js framework -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="background-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+    
+    <div class="dashboard">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar glass-panel">
+            <div class="brand">
+                <i class="fa-solid fa-tags gradient-text"></i>
+                <h1 class="gradient-text">PriceTracker</h1>
+            </div>
+            
+            <nav>
+                <div class="search-box">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Fuzzy Search Products..." onkeyup="filterProducts()">
+                </div>
+                
+                <button class="nav-btn active" onclick="showSection('overview', event)"><i class="fa-solid fa-chart-pie"></i> Dashboard</button>
+                <button class="nav-btn" onclick="showSection('add-price', event)"><i class="fa-solid fa-plus"></i> Manual Entry</button>
+                <button class="nav-btn" onclick="showSection('alerts', event)"><i class="fa-solid fa-bell"></i> Target Alerts</button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <p>Capstone Project V3</p>
+                <p>Advanced AI Features</p>
+            </div>
+        </aside>
+
+        <!-- Main Display Container -->
+        <main class="main-content">
+            <!-- 1. Overview Section -->
+            <section id="overview" class="view-section active">
+                <header class="topbar glass-panel">
+                    <h2>Live Market Overview</h2>
+                    <div class="user-profile">
+                        <div class="avatar"></div>
+                        <span>Active Session</span>
+                    </div>
+                </header>
+
+                <div class="grid-layout">
+                    <!-- Products Grid -->
+                    <div class="products-panel glass-panel">
+                        <h3><i class="fa-solid fa-box gradient-text"></i> Tracked Inventory</h3>
+                        <div class="product-list" id="productList">
+                            <div class="loading-pulse">Aggregating products...</div>
+                        </div>
+                    </div>
+
+                    <!-- Visualization Panel -->
+                    <div class="chart-panel glass-panel">
+                        <div class="chart-header">
+                            <div>
+                                <h3 id="chartTitle">Price Trends <span class="badge">Select an item</span></h3>
+                                <div class="stats-mini" id="chartStats"></div>
+                            </div>
+                            <div class="actions">
+                                <button class="btn-icon" id="exportBtn" onclick="exportCSV()"><i class="fa-solid fa-file-csv text-accent"></i> Export Data</button>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <canvas id="priceChart"></canvas>
+                        </div>
+                        
+                        <!-- Recommendation Engine Box -->
+                        <div id="recommendationBox" class="recommendation-box" style="display:none;">
+                            <h4><i class="fa-solid fa-lightbulb text-warning"></i> Smarter Alternative Suggestions</h4>
+                            <div id="recList" class="rec-list">
+                                <!-- JS Inject -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Add Price Flow -->
+            <section id="add-price" class="view-section" style="display: none;">
+                <div class="form-container glass-panel">
+                    <h2><i class="fa-solid fa-plus-circle gradient-text"></i> New Data Point</h2>
+                    <form id="priceForm">
+                        <div class="input-group">
+                            <label>Product Name</label>
+                            <input type="text" id="prodName" required placeholder="e.g. Sony Headphones">
+                        </div>
+                        <div class="input-group">
+                            <label>Category</label>
+                            <input type="text" id="prodCat" placeholder="e.g. Electronics">
+                        </div>
+                        <div class="input-group">
+                            <label>Vendor Identity</label>
+                            <input type="text" id="vendName" required placeholder="e.g. Best Buy Local">
+                        </div>
+                        <div class="input-group">
+                            <label>Recorded Price (Rs.)</label>
+                            <input type="number" id="prodPrice" required placeholder="4999" step="0.01">
+                        </div>
+                        <button type="submit" class="btn-primary">Record Transaction <i class="fa-solid fa-arrow-right"></i></button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- 3. Alert Config -->
+            <section id="alerts" class="view-section" style="display: none;">
+                <div class="form-container glass-panel">
+                    <h2><i class="fa-solid fa-bell gradient-text"></i> Create Drop Alert</h2>
+                    <form id="alertForm">
+                        <div class="input-group">
+                            <label>Target Product</label>
+                            <select id="alertProductSelect" required>
+                                <option value="" disabled selected>Loading inventory...</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Notification Threshold (Rs.)</label>
+                            <input type="number" id="alertPrice" required placeholder="3999" step="0.01">
+                        </div>
+                        <button type="submit" class="btn-primary">Initialize Watcher <i class="fa-solid fa-shield-alt"></i></button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- UI State Toast -->
+    <div id="toast" class="toast">System Status Updated</div>
+    <script src="/static/app.js"></script>
+</body>
+</html>
