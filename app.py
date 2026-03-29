@@ -31,6 +31,10 @@ def load_user(user_id):
 # Ensure DB is initialized to prevent file-not-found issues on cold start
 database.init_db()
 
+import seed
+if not database.get_all_products():
+    seed.seed_db()
+
 # Start the background notification thread
 notifier_thread = threading.Thread(target=notifier.run_notifier_loop, daemon=True)
 notifier_thread.start()
