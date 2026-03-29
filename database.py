@@ -1,7 +1,12 @@
 import sqlite3
 import os
 
-DB_FILE = 'price_tracker.db'
+import os
+
+if os.environ.get('FLASK_ENV') == 'production':
+    DB_FILE = '/tmp/price_tracker.db'
+else:
+    DB_FILE = 'price_tracker.db'
 
 def get_connection():
     return sqlite3.connect(DB_FILE)
