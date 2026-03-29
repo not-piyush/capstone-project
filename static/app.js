@@ -50,6 +50,27 @@ window.exportCSV = () => {
     window.open(`/api/export/${currentProductId}`, '_blank');
 };
 
+window.forceSync = async () => {
+    const btn = document.getElementById('syncBtn');
+    const originalHtml = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-accent"></i> Syncing...';
+    try {
+        const res = await fetch('/api/force_sync', { method: 'POST' });
+        if (res.ok) {
+            const data = await res.json();
+            showToast(`Synced ${data.synced} products!`);
+            loadProducts();
+            if (currentProductId) switchProduct(currentProductId);
+        } else {
+            showToast("Sync failed");
+        }
+    } catch (e) {
+        console.error(e);
+        showToast("Error connecting to server");
+    }
+    btn.innerHTML = originalHtml;
+};
+
 // Advanced Feature: Recommendation Engine UI
 const loadRecommendations = async (pid) => {
     const box = document.getElementById('recommendationBox');
@@ -254,7 +275,8 @@ document.getElementById('priceForm').onsubmit = async (e) => {
         product_name: document.getElementById('prodName').value,
         category: document.getElementById('prodCat').value,
         vendor_name: document.getElementById('vendName').value,
-        price: document.getElementById('prodPrice').value
+        price: document.getElementById('prodPrice').value,
+        tracking_url: document.getElementById('prodUrl') ? document.getElementById('prodUrl').value : ""
     };
 
     try {
@@ -300,6 +322,29 @@ document.getElementById('alertForm').onsubmit = async (e) => {
         showToast('Error setting alert');
     }
     btn.innerHTML = 'Initialize Watcher <i class="fa-solid fa-shield-alt"></i>';
+};
+
+document.getElementById('webhookForm').onsubmit = async (e) => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+    const payload = { webhook_url: document.getElementById('webhookUrl').value };
+
+    try {
+        const res = await fetch('/api/update_webhook', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+            showToast('Webhook Settings Saved!');
+        }
+    } catch (err) {
+        showToast('Error saving webhook');
+    }
+    btn.innerHTML = originalText;
 };
 
 // Initialization triggers

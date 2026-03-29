@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Price Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .auth-card {
+            width: 400px;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+        }
+    </style>
+</head>
+<body>
+    <div class="background-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+    
+    <div class="auth-container">
+        <div class="auth-card glass-panel">
+            <h1 class="gradient-text"><i class="fa-solid fa-tags"></i> PriceTracker</h1>
+            <h2>Login</h2>
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <ul class="flashes" style="color:var(--warning); list-style:none; padding:0;">
+                {% for message in messages %}
+                  <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+            <form method="POST" style="margin-top: 2rem; text-align: left;">
+                <div class="input-group">
+                    <label>Username</label>
+                    <input type="text" name="username" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" name="password" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Login</button>
+            </form>
+            <p style="margin-top: 1rem;">Don't have an account? <a href="/register" style="color:var(--text-accent)">Register here</a></p>
+        </div>
+    </div>
+</body>
+</html>

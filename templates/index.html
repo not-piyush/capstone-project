@@ -50,7 +50,8 @@
                     <h2>Live Market Overview</h2>
                     <div class="user-profile">
                         <div class="avatar"></div>
-                        <span>Active Session</span>
+                        <span>{{ current_user.username }}</span>
+                        <a href="/logout" style="margin-left: 1rem; color: var(--text-accent); text-decoration: none;"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
                     </div>
                 </header>
 
@@ -71,6 +72,7 @@
                                 <div class="stats-mini" id="chartStats"></div>
                             </div>
                             <div class="actions">
+                                <button class="btn-icon" id="syncBtn" onclick="forceSync()"><i class="fa-solid fa-rotate text-accent"></i> Force Sync</button>
                                 <button class="btn-icon" id="exportBtn" onclick="exportCSV()"><i class="fa-solid fa-file-csv text-accent"></i> Export Data</button>
                             </div>
                         </div>
@@ -104,6 +106,10 @@
                             <input type="text" id="prodCat" placeholder="e.g. Electronics">
                         </div>
                         <div class="input-group">
+                            <label>Tracking URL (Optional)</label>
+                            <input type="url" id="prodUrl" placeholder="https://example.com/product">
+                        </div>
+                        <div class="input-group">
                             <label>Vendor Identity</label>
                             <input type="text" id="vendName" required placeholder="e.g. Best Buy Local">
                         </div>
@@ -132,6 +138,17 @@
                             <input type="number" id="alertPrice" required placeholder="3999" step="0.01">
                         </div>
                         <button type="submit" class="btn-primary">Initialize Watcher <i class="fa-solid fa-shield-alt"></i></button>
+                    </form>
+                </div>
+                
+                <div class="form-container glass-panel" style="margin-top: 2rem;">
+                    <h2><i class="fa-brands fa-discord gradient-text"></i> Discord Integration</h2>
+                    <form id="webhookForm">
+                        <div class="input-group">
+                            <label>Discord Webhook URL for Alerts (Optional)</label>
+                            <input type="url" id="webhookUrl" placeholder="https://discord.com/api/webhooks/..." value="{{ webhook }}">
+                        </div>
+                        <button type="submit" class="btn-primary">Save Webhook <i class="fa-solid fa-save"></i></button>
                     </form>
                 </div>
             </section>
